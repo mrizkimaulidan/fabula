@@ -6,6 +6,8 @@ This tools using the best scraper and crawler framework : https://github.com/goc
 
 And thanks to https://hookgram.com for providing the website.
 
+**Note**: Sometimes there is a bug that the application cannot scraping the stories, i am still figuring out what causing that. Just re-running the application until it shows downloading status on terminal and it should be working.
+
 Clone:
 
 ```bash
@@ -48,4 +50,6 @@ $ ./fabula.exe -username=john.doe
 2022/06/27 14:14:35 6 story downloaded from john.doe
 ```
 
-Check the `./stories` folder where the story contents has been downloaded
+Check the `./stories` folder where the story contents has been downloaded.
+
+Tested on Windows 10 Pro 21H2.
