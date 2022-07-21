@@ -69,6 +69,10 @@ func (s *Scraper) Scraping() {
 		s.Request.DoRequest(s.InstagramUsername, s.FileURL, s.FileExtension)
 	})
 
+	s.Collector.OnError(func(r *colly.Response, err error) {
+		s.Logger.Printf("error occured %d %v", r.StatusCode, err)
+	})
+
 	s.Collector.OnRequest(func(r *colly.Request) {
 		s.Logger.Printf("starting to scrape story from %s", s.InstagramUsername)
 	})
