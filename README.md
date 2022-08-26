@@ -1,5 +1,8 @@
 # fabula
 
+## **NOTE!**
+## This application are not working anymore until the problem are fixed.
+<hr>
 Yet another of instagram stories scraper. Downloading instagram stories without account. Not working if the instagram target are private.
 
 This tools using the best scraper and crawler framework : https://github.com/gocolly/colly
