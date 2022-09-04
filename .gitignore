@@ -1,2 +1,6 @@
 !.gitignore
 /stories
+*.exe
+*.exe~
+fabula
+main
