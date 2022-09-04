@@ -1,15 +1,10 @@
 # fabula
 
-## **NOTE!**
-## This application are not working anymore until the problem are fixed.
-<hr>
 Yet another of instagram stories scraper. Downloading instagram stories without account. Not working if the instagram target are private.
 
-This tools using the best scraper and crawler framework : https://github.com/gocolly/colly
+This tools using https://github.com/PuerkitoBio/goquery for parsing the HTML.
 
-And thanks to https://hookgram.com for providing the website.
-
-**Note**: Sometimes there is a bug that the application cannot scraping the stories, i am still figuring out what causing that. Just re-running the application until it shows downloading status on terminal and it should be working.
+And thanks to https://igpanda.com/ for providing the website and the API.
 
 Clone:
 
@@ -54,5 +49,3 @@ $ ./fabula.exe -username=john.doe
 ```
 
 Check the `./stories` folder where the story contents has been downloaded.
-
-Tested on Windows 10 Pro 21H2.

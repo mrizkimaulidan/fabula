@@ -3,40 +3,40 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
+	"strings"
 	"time"
 )
 
-const DOWNLOADED_FOLDER = "./stories"
-
 type File struct {
-	SubFolderName string
+	InstagramUsername string
+	Extension         string
+	Logger            *log.Logger
 }
 
-func NewFile() *File {
-	return &File{}
+func (f *File) GetFileExtension(url string) string {
+	s := strings.Split(url, "/")
+	filename := s[len(s)-1]
+	extension := strings.Split(filename, ".")[1]
+
+	return extension
 }
 
-// Change the SubFolder name
-func (f *File) ChangeSubFolderName(s string) {
-	f.SubFolderName = s
+func (f *File) SetExtension(e string) {
+	f.Extension = e
 }
 
-// Create directory to the filesystem
-// if dir exists it will do nothing
-// if not exists it will creating the folder
-func (f *File) Mkdir() error {
-	if err := os.MkdirAll(fmt.Sprintf("%s/%s", DOWNLOADED_FOLDER, f.SubFolderName), os.ModePerm); err != nil {
-		return err
-	}
-
-	return nil
+func (f *File) SetInstagramUsername(u string) {
+	f.InstagramUsername = u
 }
 
-// Creating file, this is a represent of
-// images or videos of the instagram story
-func (f *File) CreateFile(extension string) (*os.File, error) {
-	file, err := os.Create(fmt.Sprintf("%s/%s/%d.%s", DOWNLOADED_FOLDER, f.SubFolderName, time.Now().UnixNano(), extension))
+func (f *File) CreateDir() error {
+	return os.MkdirAll(fmt.Sprintf("stories/%s", f.InstagramUsername), os.ModePerm)
+}
+
+func (f *File) CreateFile() (*os.File, error) {
+	file, err := os.Create(fmt.Sprintf("stories/%s/%d.%s", f.InstagramUsername, time.Now().UnixNano()/1000000, f.Extension))
 	if err != nil {
 		return nil, err
 	}
@@ -44,9 +44,14 @@ func (f *File) CreateFile(extension string) (*os.File, error) {
 	return file, nil
 }
 
-// Copying file from reader to destination
 func (f *File) CopyFile(destination io.Writer, source io.Reader) error {
 	_, err := io.Copy(destination, source)
 
 	return err
+}
+
+func NewFile() *File {
+	return &File{
+		Logger: log.Default(),
+	}
 }

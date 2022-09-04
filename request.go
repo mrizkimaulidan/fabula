@@ -6,40 +6,53 @@ import (
 )
 
 type Request struct {
-	*File
-	*log.Logger
+	File            *File
+	DownloadCount   int
+	DownloadingText string
+	Logger          *log.Logger
+}
+
+func (r *Request) DownloadedSuccessText() {
+	r.Logger.Printf("%d story downloaded from %s", r.DownloadCount, r.File.InstagramUsername)
+}
+
+func (r *Request) ShowDownloadText() {
+	r.DownloadingText += "."
+	r.Logger.Println(r.DownloadingText)
+}
+
+func (r *Request) IncrementDownloadCount() {
+	r.DownloadCount++
+}
+
+func (r *Request) Download(url string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		r.Logger.Fatalln("error requesting", err)
+	}
+	defer resp.Body.Close()
+
+	err = r.File.CreateDir()
+	if err != nil {
+		r.Logger.Fatalln("error creating directory", err)
+	}
+
+	file, err := r.File.CreateFile()
+	if err != nil {
+		r.Logger.Fatalln("error creating file", err)
+	}
+	defer file.Close()
+
+	err = r.File.CopyFile(file, resp.Body)
+	if err != nil {
+		r.Logger.Fatalln("error copying file", err)
+	}
 }
 
 func NewRequest() *Request {
 	return &Request{
-		File:   NewFile(),
-		Logger: log.Default(),
-	}
-}
-
-// Downloading founded url from scraping
-func (r *Request) DoRequest(username string, fileURL string, ext string) {
-	resp, err := http.Get(fileURL)
-	if err != nil {
-		r.Logger.Fatal("error when requesting to url: ", err.Error())
-	}
-	defer resp.Body.Close()
-
-	r.File.ChangeSubFolderName(username)
-
-	err = r.File.Mkdir() // create directory
-	if err != nil {
-		r.Logger.Fatal("error when make directory: ", err.Error())
-	}
-
-	destination, err := r.File.CreateFile(ext) // create stream of created file
-	if err != nil {
-		r.Logger.Fatal("error when creating a file: ", err.Error())
-	}
-	defer destination.Close()
-
-	err = r.File.CopyFile(destination, resp.Body) // copy created streamed file to filesystem
-	if err != nil {
-		r.Logger.Fatal("error copying stream file to filesystem: ", err.Error())
+		DownloadingText: "downloading, please wait",
+		File:            NewFile(),
+		Logger:          log.Default(),
 	}
 }
