@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"strings"
 	"time"
@@ -12,7 +11,6 @@ import (
 type File struct {
 	InstagramUsername string
 	Extension         string
-	Logger            *log.Logger
 }
 
 func (f *File) GetFileExtension(url string) string {
@@ -51,7 +49,5 @@ func (f *File) CopyFile(destination io.Writer, source io.Reader) error {
 }
 
 func NewFile() *File {
-	return &File{
-		Logger: log.Default(),
-	}
+	return &File{}
 }
