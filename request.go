@@ -12,19 +12,25 @@ type Request struct {
 	Logger          *log.Logger
 }
 
+// Show the downloaded success text.
 func (r *Request) DownloadedSuccessText() {
 	r.Logger.Printf("%d story downloaded from %s", r.DownloadCount, r.File.InstagramUsername)
 }
 
+// Show the downloading text process.
 func (r *Request) ShowDownloadText() {
 	r.DownloadingText += "."
 	r.Logger.Println(r.DownloadingText)
 }
 
+// Increment the download count for tracking
+// how many has been downloaded.
 func (r *Request) IncrementDownloadCount() {
 	r.DownloadCount++
 }
 
+// This function downloading the story file.
+// Downloading and then do saving to filesystem.
 func (r *Request) Download(url string) {
 	resp, err := http.Get(url)
 	if err != nil {

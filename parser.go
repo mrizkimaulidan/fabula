@@ -14,6 +14,8 @@ type Parser struct {
 	Logger *log.Logger
 }
 
+// This function consuming an API from igpanda.
+// Unmarshaling the response body to Response struct.
 func (p *Parser) Parse(username string) *Response {
 	resp, err := http.Get(fmt.Sprintf(URL, username))
 	if err != nil {
