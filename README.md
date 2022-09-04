@@ -20,7 +20,7 @@ $ git clone https://github.com/mrizkimaulidan/fabula.git
 Download the required depedencies:
 
 ```bash
-$ go mod tidy
+$ go mod download
 ```
 
 Build:
