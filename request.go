@@ -23,8 +23,8 @@ func (r *Request) ShowDownloadText() {
 	r.Logger.Println(r.DownloadingText)
 }
 
-// Increment the download count for tracking
-// how many has been downloaded.
+// Increment the download count for track
+// how many story has been downloaded.
 func (r *Request) IncrementDownloadCount() {
 	r.DownloadCount++
 }
