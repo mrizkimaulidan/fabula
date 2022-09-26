@@ -1,7 +1,6 @@
 package main
 
-// Struct response for unmarshal consumed API.
+// Response struct for igpanda API result
 type Response struct {
-	Error bool
-	HTML  string
+	HTML any
 }

@@ -3,64 +3,75 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
+	"net/http"
 	"os"
 	"strings"
 	"time"
 )
 
 type File struct {
-	InstagramUsername string
-	Extension         string
+	Extension     string
+	Instagram     *Instagram
+	DownloadCount int // count how many story has been downloaded
+	Log           *log.Logger
 }
 
-// Getting the file extension on the story URL.
-// Split the url to remove the `/` first.
-// Get the filename, and then split the filename by dot
-// separator. The last index is the extension.
-func (f *File) GetFileExtension(url string) string {
-	s := strings.Split(url, "/")
-	filename := s[len(s)-1]
-	extension := strings.Split(filename, ".")[1]
+// Increment the download count
+func (f *File) IncrementDownloadCount() {
+	f.DownloadCount++
+}
+
+// Get the download count
+func (f *File) GetDownloadCount() int {
+	return f.DownloadCount
+}
+
+// Show downloading text status
+func (f *File) ShowDownloadText() {
+	f.Log.Println("downloading, please wait")
+}
+
+// Get the file extension from URL.
+// The URL is the full URL of the story file, based on
+// the scraped result
+func (f *File) GetExtension(url string) string {
+	fullURL := url
+	s := strings.Split(fullURL, ".")
+	extension := s[len(s)-1]
 
 	return extension
 }
 
-// Set the file extension.
-func (f *File) SetExtension(e string) {
-	f.Extension = e
-}
-
-// Set the instagram username.
-func (f *File) SetInstagramUsername(u string) {
-	f.InstagramUsername = u
-}
-
-// Create directory folder for saving the story.
-// The folder created in `stories/` and inside there
-// will be another folder, the folder name is your
-// target instagram username.
-func (f *File) CreateDir() error {
-	return os.MkdirAll(fmt.Sprintf("stories/%s", f.InstagramUsername), os.ModePerm)
-}
-
-// Create file of a story that has been downloaded.
-// The file saved inside the `stories/username` folder.
-func (f *File) CreateFile() (*os.File, error) {
-	file, err := os.Create(fmt.Sprintf("stories/%s/%d.%s", f.InstagramUsername, time.Now().UnixNano()/1000000, f.Extension))
+// Download the story and save the story to the disk.
+func (f *File) Download(URL string) {
+	resp, err := http.Get(URL)
 	if err != nil {
-		return nil, err
+		f.Log.Fatalf("error requesting to URL %v", err)
+	}
+	defer resp.Body.Close()
+
+	err = os.MkdirAll(fmt.Sprintf("stories/%s", f.Instagram.Username), os.ModePerm)
+	if err != nil {
+		f.Log.Fatalf("error creating story folder %v", err)
 	}
 
-	return file, nil
+	extension := f.GetExtension(URL)
+	file, err := os.Create(fmt.Sprintf("stories/%s/%d.%s", f.Instagram.Username, time.Now().UnixNano()/1000000, extension))
+	if err != nil {
+		f.Log.Fatalf("error creating story file %v", err)
+	}
+	defer file.Close()
+
+	_, err = io.Copy(file, resp.Body)
+	if err != nil {
+		f.Log.Fatalf("error copying file %v", err)
+	}
 }
 
-// Copying file to folder destination.
-func (f *File) CopyFile(destination io.Writer, source io.Reader) error {
-	_, err := io.Copy(destination, source)
-
-	return err
-}
-
-func NewFile() *File {
-	return &File{}
+func NewFile(i *Instagram) *File {
+	return &File{
+		Instagram: i,
+		Log:       log.Default(),
+	}
 }

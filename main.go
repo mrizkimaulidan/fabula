@@ -8,13 +8,14 @@ import (
 var username string
 
 func main() {
-	flag.StringVar(&username, "username", "", "-username=john.doe")
+	flag.StringVar(&username, "username", "", "-username the instagram username")
 	flag.Parse()
 
-	p := NewParser()
-	response := p.Parse(username)
+	i := Instagram{Username: username}
+	parser := NewParser(&i)
 
-	s := NewScraper()
-	s.Request.File.SetInstagramUsername(username)
-	s.Scrape(strings.NewReader(response.HTML))
+	response := parser.Call()
+
+	scraper := NewScraper(&i)
+	scraper.Scrape(strings.NewReader(response.HTML.(string)))
 }

@@ -39,12 +39,12 @@ Run instagram story downloader
 ```bash
 $ ./fabula.exe -username=john.doe
 2022/06/27 14:14:26 starting to scrape story from john.doe
-2022/06/27 14:14:27 downloading, please wait.
-2022/06/27 14:14:29 downloading, please wait..
-2022/06/27 14:14:30 downloading, please wait...
-2022/06/27 14:14:32 downloading, please wait....
-2022/06/27 14:14:34 downloading, please wait.....
-2022/06/27 14:14:34 downloading, please wait......
+2022/06/27 14:14:27 downloading, please wait
+2022/06/27 14:14:29 downloading, please wait
+2022/06/27 14:14:30 downloading, please wait
+2022/06/27 14:14:32 downloading, please wait
+2022/06/27 14:14:34 downloading, please wait
+2022/06/27 14:14:34 downloading, please wait
 2022/06/27 14:14:35 6 story downloaded from john.doe
 ```
 

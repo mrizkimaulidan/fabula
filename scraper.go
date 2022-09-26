@@ -8,36 +8,36 @@ import (
 )
 
 type Scraper struct {
-	Request *Request
-	Logger  *log.Logger
+	File      *File
+	Instagram *Instagram
+	Log       *log.Logger
 }
 
-// This is the core application.
-// The reader parameter is from the consumed API response.
+// Core of this application. Do scraping to igpanda and
+// download the story. doc.Find() will looping until
+// how many the storyURL has found.
 func (sc *Scraper) Scrape(r io.Reader) {
 	doc, err := goquery.NewDocumentFromReader(r)
 	if err != nil {
-		sc.Logger.Fatalln("error reading the reader", err)
+		sc.Log.Fatalf("error reading from reader %s", err)
 	}
 
-	sc.Logger.Println("starting to scrape story from", sc.Request.File.InstagramUsername)
+	sc.Log.Println("starting to scrape story from", sc.Instagram.Username)
 	doc.Find(".post-wrapper .download-button").Each(func(i int, s *goquery.Selection) {
 		storyURL, _ := s.Attr("href") // getting the story URL
 
-		extension := sc.Request.File.GetFileExtension(storyURL)
-		sc.Request.File.SetExtension(extension)
-
-		sc.Request.ShowDownloadText()
-		sc.Request.Download(storyURL) // download the story based on the URL that has been obtained from scraping
-		sc.Request.IncrementDownloadCount()
+		sc.File.ShowDownloadText()
+		sc.File.Download(storyURL)
+		sc.File.IncrementDownloadCount()
 	})
 
-	sc.Request.DownloadedSuccessText()
+	sc.Log.Printf("%d story downloaded from %s", sc.File.GetDownloadCount(), sc.Instagram.Username)
 }
 
-func NewScraper() *Scraper {
+func NewScraper(i *Instagram) *Scraper {
 	return &Scraper{
-		Request: NewRequest(),
-		Logger:  log.Default(),
+		File:      NewFile(i),
+		Instagram: i,
+		Log:       log.Default(),
 	}
 }

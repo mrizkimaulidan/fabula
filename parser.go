@@ -8,37 +8,38 @@ import (
 	"net/http"
 )
 
-var URL = "https://igpanda.com/getAjax?type=story&url=%s"
+const URL = "https://igpanda.com/getAjax?type=story&url=%s"
 
 type Parser struct {
-	Logger *log.Logger
+	Instagram *Instagram
 }
 
-// This function consuming an API from igpanda.
-// Unmarshaling the response body to Response struct.
-func (p *Parser) Parse(username string) *Response {
-	resp, err := http.Get(fmt.Sprintf(URL, username))
+// Call request to igpanda API
+func (r *Parser) Call() *Response {
+	resp, err := http.Get(fmt.Sprintf(URL, r.Instagram.Username))
 	if err != nil {
-		p.Logger.Fatalln("error requesting to url", err)
+		log.Fatalf("error requesting to url %v", err)
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
-		p.Logger.Fatalln("error reading response body", err)
+		log.Fatalf("error reading bytes %v", err)
 	}
 
-	var response Response
-	err = json.Unmarshal(body, &response)
+	var body Response
+	err = json.Unmarshal(b, &body)
 	if err != nil {
-		p.Logger.Fatalln("error unmarshaling response body", err)
+		log.Fatalf("error unmarshaling the json %v", err)
 	}
 
-	return &response
+	return &Response{
+		HTML: body.HTML,
+	}
 }
 
-func NewParser() *Parser {
+func NewParser(i *Instagram) *Parser {
 	return &Parser{
-		Logger: log.Default(),
+		Instagram: i,
 	}
 }
