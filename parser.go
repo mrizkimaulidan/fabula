@@ -11,6 +11,7 @@ import (
 const URL = "https://igpanda.com/getAjax?type=story&url=%s"
 
 type Parser struct {
+	Log       *log.Logger
 	Instagram *Instagram
 }
 
@@ -21,6 +22,11 @@ func (p *Parser) Call() *Response {
 		log.Fatalf("error requesting to url %v", err)
 	}
 	defer resp.Body.Close()
+
+	// check status code status
+	if resp.StatusCode != 200 {
+		p.Log.Fatalf("something went wrong with the API server, %d status code given", resp.StatusCode)
+	}
 
 	b, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -40,6 +46,7 @@ func (p *Parser) Call() *Response {
 
 func NewParser(i *Instagram) *Parser {
 	return &Parser{
+		Log:       log.Default(),
 		Instagram: i,
 	}
 }
