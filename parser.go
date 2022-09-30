@@ -15,8 +15,8 @@ type Parser struct {
 }
 
 // Call request to igpanda API
-func (r *Parser) Call() *Response {
-	resp, err := http.Get(fmt.Sprintf(URL, r.Instagram.Username))
+func (p *Parser) Call() *Response {
+	resp, err := http.Get(fmt.Sprintf(URL, p.Instagram.Username))
 	if err != nil {
 		log.Fatalf("error requesting to url %v", err)
 	}
