@@ -19,7 +19,7 @@ type Parser struct {
 func (p *Parser) Call() *Response {
 	resp, err := http.Get(fmt.Sprintf(URL, p.Instagram.Username))
 	if err != nil {
-		log.Fatalf("error requesting to url %v", err)
+		p.Log.Fatalf("error requesting to url %v", err)
 	}
 	defer resp.Body.Close()
 
