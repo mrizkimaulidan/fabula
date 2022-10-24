@@ -30,13 +30,13 @@ func (p *Parser) Call() *Response {
 
 	b, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalf("error reading bytes %v", err)
+		p.Log.Fatalf("error reading bytes %v", err)
 	}
 
 	var body Response
 	err = json.Unmarshal(b, &body)
 	if err != nil {
-		log.Fatalf("error unmarshaling the json %v", err)
+		p.Log.Fatalf("error unmarshaling the json %v", err)
 	}
 
 	return &Response{
