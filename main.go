@@ -1,14 +1,21 @@
 package main
 
 import (
+	"flag"
 	"log"
 
 	"github.com/mrizkimaulidan/fabula/file"
+	"github.com/mrizkimaulidan/fabula/instagram"
 	"github.com/mrizkimaulidan/fabula/parser"
 )
 
 func main() {
-	parser := parser.NewParser()
+	var profileID string
+	flag.StringVar(&profileID, "profileID", "", "the instagram profileID")
+	flag.Parse()
+
+	instagram := instagram.SetProfileID(profileID)
+	parser := parser.NewParser(instagram.ProfileID)
 
 	resp, err := parser.Call()
 	if err != nil {
@@ -19,7 +26,6 @@ func main() {
 	fileS.CreateDir()
 
 	files := parser.Parsing(resp)
-
 	for _, f := range *files {
 		resp, err := fileS.GetFile(f.URL)
 		if err != nil {

@@ -2,6 +2,7 @@ package parser
 
 import (
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -10,7 +11,7 @@ import (
 	"github.com/mrizkimaulidan/fabula/file"
 )
 
-const API_URL = "https://storiesig.info/api/ig/stories/9042373612"
+const API_URL = "https://storiesig.info/api/ig/stories/%s"
 
 type ParserInterface interface {
 	Call() (*Response, error)
@@ -18,15 +19,17 @@ type ParserInterface interface {
 }
 
 type Parser struct {
-	//
+	InstagramProfileID string
 }
 
-func NewParser() ParserInterface {
-	return &Parser{}
+func NewParser(instagramProfileID string) ParserInterface {
+	return &Parser{
+		InstagramProfileID: instagramProfileID,
+	}
 }
 
 func (p *Parser) Call() (*Response, error) {
-	resp, err := http.Get(API_URL)
+	resp, err := http.Get(fmt.Sprintf(API_URL, p.InstagramProfileID))
 	if err != nil {
 		return nil, err
 	}

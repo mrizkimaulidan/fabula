@@ -2,9 +2,7 @@
 
 Yet another of instagram stories scraper. Downloading instagram stories without account. Not working if the instagram target are private.
 
-This tools using https://github.com/PuerkitoBio/goquery for parsing the HTML.
-
-And thanks to https://igpanda.com/ for providing the website and the API.
+Thanks to https://storiesig.info/en/ for providing the website and the API.
 
 Clone:
 
@@ -28,24 +26,16 @@ Usage:
 Show help
 
 ```bash
-$ ./fabula.exe --help
-Usage of fabula:
-  -username string
-        the instagram username
+$ ./fabula --help
+Usage of ./fabula:
+  -profileID string
+        the instagram profileID
 ```
 
 Run instagram story downloader
 
 ```bash
-$ ./fabula.exe -username=john.doe
-2022/06/27 14:14:26 starting to scrape story from john.doe
-2022/06/27 14:14:27 downloading, please wait
-2022/06/27 14:14:29 downloading, please wait
-2022/06/27 14:14:30 downloading, please wait
-2022/06/27 14:14:32 downloading, please wait
-2022/06/27 14:14:34 downloading, please wait
-2022/06/27 14:14:34 downloading, please wait
-2022/06/27 14:14:35 6 story downloaded from john.doe
+$ ./fabula -profileID=758175817271
 ```
 
 Check the `./stories` folder where the story contents has been downloaded.
