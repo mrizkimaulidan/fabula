@@ -28,14 +28,14 @@ Show help
 ```bash
 $ ./fabula --help
 Usage of ./fabula:
-  -profileID string
-        the instagram profileID
+  -username string
+        the instagram username
 ```
 
 Run instagram story downloader
 
 ```bash
-$ ./fabula -profileID=758175817271
+$ ./fabula -username=john.doe
 ```
 
 Check the `./stories` folder where the story contents has been downloaded.
