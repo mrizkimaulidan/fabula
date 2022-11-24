@@ -27,6 +27,7 @@ func main() {
 
 	files := parser.Parsing(resp)
 	for _, f := range *files {
+		// TODO: goroutine??
 		resp, err := fileS.GetFile(f.URL)
 		if err != nil {
 			log.Fatal(err.Error())
