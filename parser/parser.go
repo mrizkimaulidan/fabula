@@ -22,17 +22,17 @@ type ParserInterface interface {
 }
 
 type Parser struct {
-	Instagram instagram.Instagram
+	InstagramProfile instagram.InstagramProfile
 }
 
-func NewParser(instagram instagram.Instagram) ParserInterface {
+func NewParser(instagram instagram.InstagramProfile) ParserInterface {
 	return &Parser{
-		Instagram: instagram,
+		InstagramProfile: instagram,
 	}
 }
 
 func (p *Parser) Call() (*Response, error) {
-	resp, err := http.Get(fmt.Sprintf(API_URL, p.Instagram.ProfileID))
+	resp, err := http.Get(fmt.Sprintf(API_URL, p.InstagramProfile.Users[0].User.Pk))
 	if err != nil {
 		return nil, err
 	}
