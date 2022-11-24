@@ -1,21 +1,36 @@
 package main
 
 import (
-	"flag"
-	"strings"
+	"log"
+
+	"github.com/mrizkimaulidan/fabula/file"
+	"github.com/mrizkimaulidan/fabula/parser"
 )
 
-var username string
-
 func main() {
-	flag.StringVar(&username, "username", "", "-username the instagram username")
-	flag.Parse()
+	parser := parser.NewParser()
 
-	i := Instagram{Username: username}
-	parser := NewParser(&i)
+	resp, err := parser.Call()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
-	response := parser.Call()
+	fileS := file.NewFile()
+	fileS.CreateDir()
 
-	scraper := NewScraper(&i)
-	scraper.Scrape(strings.NewReader(response.HTML.(string)))
+	files := parser.Parsing(resp)
+
+	for _, f := range *files {
+		resp, err := fileS.GetFile(f.URL)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		defer resp.Body.Close()
+
+		createdFile, err := fileS.CreateFile(f, resp.Body)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		defer createdFile.Close()
+	}
 }
