@@ -37,7 +37,7 @@ func (f *File) CreateDir() error {
 }
 
 func (f *File) CreateFile(file File, source io.Reader) (*os.File, error) {
-	// stories/{instagram-username}/
+	// stories/{instagram-username}/{unixTime}.{extension}
 	fullPath := fmt.Sprintf("%s/%s/%s%s", DIR, f.InstagramProfile.Users[0].User.Username, file.Filename, file.Extension)
 	createdFile, err := os.Create(fullPath)
 	if err != nil {
