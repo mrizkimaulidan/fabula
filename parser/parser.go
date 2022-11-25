@@ -77,7 +77,7 @@ func (p *Parser) Start() {
 		log.Fatal(err.Error())
 	}
 
-	fileS := file.NewFile()
+	fileS := file.NewFile(p.InstagramProfile)
 	fileS.CreateDir()
 
 	files := p.Parsing(resp)
