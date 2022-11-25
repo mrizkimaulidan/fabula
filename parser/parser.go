@@ -77,19 +77,19 @@ func (p *Parser) Start() {
 		log.Fatal(err.Error())
 	}
 
-	fileS := file.NewFile(p.InstagramProfile)
-	fileS.CreateDir()
+	f := file.NewFile(p.InstagramProfile)
+	f.CreateDir()
 
 	files := p.Parsing(resp)
 	for _, f := range *files {
 		// TODO: goroutine??
-		resp, err := fileS.GetFile(f.URL)
+		resp, err := f.GetFile(f.URL)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
 		defer resp.Body.Close()
 
-		createdFile, err := fileS.CreateFile(f, resp.Body)
+		createdFile, err := f.CreateFile(f, resp.Body)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
