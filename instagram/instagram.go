@@ -2,8 +2,11 @@ package instagram
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
 	"net/http"
+	"strings"
 )
 
 type InstagramInterface interface {
@@ -25,11 +28,20 @@ func (i *Instagram) GetProfileIDByUsername(username string) (*InstagramProfile, 
 	}
 	defer resp.Body.Close()
 
-	var response InstagramProfile
-	err = json.NewDecoder(resp.Body).Decode(&response)
+	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 
-	return &response, nil
+	if strings.Contains(string(responseBody), "fail") {
+		return nil, errors.New("rate limit reached, try again later")
+	}
+
+	var profile InstagramProfile
+	err = json.NewDecoder(resp.Body).Decode(&profile)
+	if err != nil {
+		return nil, err
+	}
+
+	return &profile, nil
 }
