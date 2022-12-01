@@ -1,6 +1,7 @@
 package instagram
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -27,6 +28,10 @@ func (i *Instagram) GetInstagramProfile(username string) (*Instagram, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode == 429 {
+		return nil, errors.New("too many request, try again later")
+	}
 
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
