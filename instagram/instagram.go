@@ -1,28 +1,28 @@
 package instagram
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"regexp"
 	"strings"
 )
 
 type InstagramInterface interface {
-	GetProfileIDByUsername(username string) (*InstagramProfile, error)
+	GetInstagramProfile(username string) (*Instagram, error)
 }
 
 type Instagram struct {
 	ProfileID string
+	Username  string
 }
 
 func NewInstagram() InstagramInterface {
 	return &Instagram{}
 }
 
-func (i *Instagram) GetProfileIDByUsername(username string) (*InstagramProfile, error) {
-	resp, err := http.Get(fmt.Sprintf("https://www.instagram.com/web/search/topsearch/?query=%s", username))
+func (i *Instagram) GetInstagramProfile(username string) (*Instagram, error) {
+	resp, err := http.Get(fmt.Sprintf("https://www.instagram.com/%s", username))
 	if err != nil {
 		return nil, err
 	}
@@ -33,15 +33,19 @@ func (i *Instagram) GetProfileIDByUsername(username string) (*InstagramProfile, 
 		return nil, err
 	}
 
-	if strings.Contains(string(responseBody), "fail") {
-		return nil, errors.New("rate limit reached, try again later")
-	}
-
-	var profile InstagramProfile
-	err = json.Unmarshal(responseBody, &profile)
-	if err != nil {
-		return nil, err
+	profile := Instagram{
+		Username:  username,
+		ProfileID: i.extractValue(string(responseBody), "profile_id"),
 	}
 
 	return &profile, nil
+}
+
+func (i *Instagram) extractValue(body string, key string) string {
+	keystr := "\"" + key + "\":[^,;\\]}]*"
+	r, _ := regexp.Compile(keystr)
+	match := r.FindString(body)
+	keyValMatch := strings.Split(match, ":")
+
+	return strings.ReplaceAll(keyValMatch[1], "\"", "")
 }

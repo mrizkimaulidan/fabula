@@ -3,7 +3,6 @@ package parser
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -18,21 +17,20 @@ const API_URL = "https://storiesig.info/api/ig/stories/%s"
 type ParserInterface interface {
 	Call() (*Response, error)
 	Parsing(response *Response) *[]file.File
-	Start()
 }
 
 type Parser struct {
-	InstagramProfile instagram.InstagramProfile
+	Instagram instagram.Instagram
 }
 
-func NewParser(instagram instagram.InstagramProfile) ParserInterface {
+func NewParser(instagram instagram.Instagram) ParserInterface {
 	return &Parser{
-		InstagramProfile: instagram,
+		Instagram: instagram,
 	}
 }
 
 func (p *Parser) Call() (*Response, error) {
-	resp, err := http.Get(fmt.Sprintf(API_URL, p.InstagramProfile.Users[0].User.Pk))
+	resp, err := http.Get(fmt.Sprintf(API_URL, p.Instagram.ProfileID))
 	if err != nil {
 		return nil, err
 	}
@@ -69,30 +67,4 @@ func (p *Parser) Parsing(response *Response) *[]file.File {
 	}
 
 	return &files
-}
-
-func (p *Parser) Start() {
-	resp, err := p.Call()
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	f := file.NewFile(p.InstagramProfile)
-	f.CreateDir()
-
-	files := p.Parsing(resp)
-	for _, f := range *files {
-		// TODO: goroutine??
-		resp, err := f.GetFile(f.URL)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		defer resp.Body.Close()
-
-		createdFile, err := f.CreateFile(f, resp.Body)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		defer createdFile.Close()
-	}
 }

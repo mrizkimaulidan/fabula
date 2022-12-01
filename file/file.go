@@ -18,27 +18,27 @@ type FileInterface interface {
 }
 
 type File struct {
-	Filename         string
-	Extension        string
-	URL              string
-	InstagramProfile instagram.InstagramProfile
+	Filename  string
+	Extension string
+	URL       string
+	Instagram instagram.Instagram
 }
 
-func NewFile(instagram instagram.InstagramProfile) FileInterface {
+func NewFile(instagram instagram.Instagram) FileInterface {
 	return &File{
-		InstagramProfile: instagram,
+		Instagram: instagram,
 	}
 }
 
 func (f *File) CreateDir() error {
 	// stories/{instagram-username}
-	path := fmt.Sprintf("%s/%s", DIR, f.InstagramProfile.Users[0].User.Username)
+	path := fmt.Sprintf("%s/%s", DIR, f.Instagram.Username)
 	return os.MkdirAll(path, os.ModePerm)
 }
 
 func (f *File) CreateFile(file File, source io.Reader) (*os.File, error) {
 	// stories/{instagram-username}/{unixTime}.{extension}
-	fullPath := fmt.Sprintf("%s/%s/%s%s", DIR, f.InstagramProfile.Users[0].User.Username, file.Filename, file.Extension)
+	fullPath := fmt.Sprintf("%s/%s/%s%s", DIR, f.Instagram.Username, file.Filename, file.Extension)
 	createdFile, err := os.Create(fullPath)
 	if err != nil {
 		return nil, err
