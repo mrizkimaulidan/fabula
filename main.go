@@ -29,6 +29,11 @@ func main() {
 	files := parser.Parsing(response)
 	file := file.NewFile(*instagramProfile)
 
+	err = file.CreateDir()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
 	for _, f := range *files {
 		response, err := file.GetFile(f.URL)
 		if err != nil {
