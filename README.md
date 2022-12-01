@@ -4,19 +4,13 @@ Yet another of instagram stories downloader. Downloading instagram stories witho
 
 Thanks to https://storiesig.info/en/ for providing the website and the API.
 
-*Note : There is a rate limit when hitting the API, because it's calling the Instagram official API for getting the UserID based on the username, I'm still figuring out to get UserID without using Instagram official API*
-
 Clone:
 
 ```bash
 $ git clone https://github.com/mrizkimaulidan/fabula.git
 ```
 
-Download the required depedencies:
-
-```bash
-$ go mod download
-```
+*Note: There is a `Makefile` if you need to create the binary file by each operating system.*
 
 Build:
 ```bash
