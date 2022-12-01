@@ -4,6 +4,8 @@ Yet another of instagram stories downloader. Downloading instagram stories witho
 
 Thanks to https://storiesig.info/en/ for providing the website and the API.
 
+*Note: There is a rate limiter from Instagram website.*
+
 Clone:
 
 ```bash
