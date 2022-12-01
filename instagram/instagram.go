@@ -38,7 +38,7 @@ func (i *Instagram) GetProfileIDByUsername(username string) (*InstagramProfile, 
 	}
 
 	var profile InstagramProfile
-	err = json.NewDecoder(resp.Body).Decode(&profile)
+	err = json.Unmarshal(responseBody, &profile)
 	if err != nil {
 		return nil, err
 	}
