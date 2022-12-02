@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"sync"
 
@@ -10,10 +11,28 @@ import (
 	"github.com/mrizkimaulidan/fabula/parser"
 )
 
+func isFlagPassed(args []string) (bool, error) {
+	found := false
+	i := 0
+	flag.Visit(func(f *flag.Flag) {
+		if f.Name == args[i] {
+			found = true
+		}
+		i++
+	})
+
+	return found, fmt.Errorf("missing %s arguments", args[i])
+}
+
 func main() {
 	var username string
 	flag.StringVar(&username, "username", "", "the instagram username")
 	flag.Parse()
+
+	ok, err := isFlagPassed([]string{"username"})
+	if !ok {
+		log.Fatal(err)
+	}
 
 	instagram := instagram.NewInstagram()
 	instagramProfile, err := instagram.GetInstagramProfile(username)
