@@ -17,8 +17,9 @@ func isFlagPassed(args []string) (bool, error) {
 	flag.Visit(func(f *flag.Flag) {
 		if f.Name == args[i] {
 			found = true
+		} else {
+			i++
 		}
-		i++
 	})
 
 	return found, fmt.Errorf("missing %s arguments", args[i])
