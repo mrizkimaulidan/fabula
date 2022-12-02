@@ -3,6 +3,7 @@ package file
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 
@@ -15,6 +16,7 @@ type FileInterface interface {
 	CreateDir() error
 	CreateFile(file File, source io.Reader) (*os.File, error)
 	GetFile(URL string) (*http.Response, error)
+	OutputPath()
 }
 
 type File struct {
@@ -28,6 +30,10 @@ func NewFile(instagram instagram.Instagram) FileInterface {
 	return &File{
 		Instagram: instagram,
 	}
+}
+
+func (f *File) OutputPath() {
+	log.Printf("stories saved on : %s/%s", DIR, f.Instagram.Username)
 }
 
 func (f *File) CreateDir() error {

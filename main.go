@@ -48,6 +48,8 @@ func main() {
 	}
 
 	files := parser.Parsing(response)
+	log.Printf("found the user with %d story, downloading now please wait..", len(*files))
+
 	fs := file.NewFile(*instagramProfile)
 
 	err = fs.CreateDir()
@@ -74,4 +76,6 @@ func main() {
 		}(f)
 	}
 	wg.Wait()
+
+	fs.OutputPath()
 }
