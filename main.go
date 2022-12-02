@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"sync"
 
 	"github.com/mrizkimaulidan/fabula/file"
 	"github.com/mrizkimaulidan/fabula/instagram"
@@ -27,24 +28,30 @@ func main() {
 	}
 
 	files := parser.Parsing(response)
-	file := file.NewFile(*instagramProfile)
+	fs := file.NewFile(*instagramProfile)
 
-	err = file.CreateDir()
+	err = fs.CreateDir()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
+	var wg sync.WaitGroup
 	for _, f := range *files {
-		response, err := file.GetFile(f.URL)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		defer response.Body.Close()
+		wg.Add(1)
+		go func(f file.File) {
+			defer wg.Done()
+			response, err := fs.GetFile(f.URL)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+			defer response.Body.Close()
 
-		createdFile, err := file.CreateFile(f, response.Body)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		defer createdFile.Close()
+			createdFile, err := fs.CreateFile(f, response.Body)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+			defer createdFile.Close()
+		}(f)
 	}
+	wg.Wait()
 }
