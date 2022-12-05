@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+const INSTAGRAM_URL = "https://www.instagram.com/%s"
+
 type InstagramInterface interface {
 	GetInstagramProfile(username string) (*Instagram, error)
 }
@@ -23,7 +25,7 @@ func NewInstagram() InstagramInterface {
 }
 
 func (i *Instagram) GetInstagramProfile(username string) (*Instagram, error) {
-	resp, err := http.Get(fmt.Sprintf("https://www.instagram.com/%s", username))
+	resp, err := http.Get(fmt.Sprintf(INSTAGRAM_URL, username))
 	if err != nil {
 		return nil, err
 	}
