@@ -23,10 +23,10 @@ type File struct {
 	Filename  string
 	Extension string
 	URL       string
-	Instagram instagram.Instagram
+	Instagram *instagram.Instagram
 }
 
-func NewFile(instagram instagram.Instagram) FileInterface {
+func NewFile(instagram *instagram.Instagram) FileInterface {
 	return &File{
 		Instagram: instagram,
 	}

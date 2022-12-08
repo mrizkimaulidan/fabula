@@ -20,10 +20,10 @@ type ParserInterface interface {
 }
 
 type Parser struct {
-	Instagram instagram.Instagram
+	Instagram *instagram.Instagram
 }
 
-func NewParser(instagram instagram.Instagram) ParserInterface {
+func NewParser(instagram *instagram.Instagram) ParserInterface {
 	return &Parser{
 		Instagram: instagram,
 	}

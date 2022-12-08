@@ -41,7 +41,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	parser := parser.NewParser(*instagramProfile)
+	parser := parser.NewParser(instagramProfile)
 	response, err := parser.Call()
 	if err != nil {
 		log.Fatal(err.Error())
@@ -50,7 +50,7 @@ func main() {
 	files := parser.Parsing(response)
 	log.Printf("found the user with %d story, downloading now please wait..", len(*files))
 
-	fs := file.NewFile(*instagramProfile)
+	fs := file.NewFile(instagramProfile)
 
 	err = fs.CreateDir()
 	if err != nil {
