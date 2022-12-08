@@ -73,6 +73,8 @@ func main() {
 				log.Fatal(err.Error())
 			}
 			defer createdFile.Close()
+
+			fs.DownloadText(&f)
 		}(f)
 	}
 	wg.Wait()

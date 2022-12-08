@@ -17,6 +17,7 @@ type FileInterface interface {
 	CreateFile(file File, source io.Reader) (*os.File, error)
 	GetFile(URL string) (*http.Response, error)
 	OutputPath()
+	DownloadText(file *File)
 }
 
 type File struct {
@@ -30,6 +31,11 @@ func NewFile(instagram *instagram.Instagram) FileInterface {
 	return &File{
 		Instagram: instagram,
 	}
+}
+
+// Show download text on console
+func (f *File) DownloadText(file *File) {
+	log.Printf("downloading.. %s[%s]", file.Filename, file.Extension)
 }
 
 // Print output information where is the
