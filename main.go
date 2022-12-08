@@ -22,7 +22,7 @@ func isFlagPassed(args []string) (bool, error) {
 		}
 	})
 
-	return found, fmt.Errorf("missing %s arguments", args[i])
+	return found, fmt.Errorf("missing %s arguments, use -help flag", args[i])
 }
 
 func main() {
