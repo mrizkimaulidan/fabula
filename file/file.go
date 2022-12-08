@@ -32,16 +32,23 @@ func NewFile(instagram *instagram.Instagram) FileInterface {
 	}
 }
 
+// Print output information where is the
+// story has been downloaded
 func (f *File) OutputPath() {
 	log.Printf("stories saved on : %s/%s", DIR, f.Instagram.Username)
 }
 
+// Create directory for saving the story
+// file
 func (f *File) CreateDir() error {
 	// stories/{instagram-username}
 	path := fmt.Sprintf("%s/%s", DIR, f.Instagram.Username)
 	return os.MkdirAll(path, os.ModePerm)
 }
 
+// Create file where is content are
+// the story from source reader
+// on parameter
 func (f *File) CreateFile(file File, source io.Reader) (*os.File, error) {
 	// stories/{instagram-username}/{unixTime}.{extension}
 	fullPath := fmt.Sprintf("%s/%s/%s%s", DIR, f.Instagram.Username, file.Filename, file.Extension)
@@ -58,6 +65,7 @@ func (f *File) CreateFile(file File, source io.Reader) (*os.File, error) {
 	return createdFile, nil
 }
 
+// Get file from URL provided on parameter
 func (f *File) GetFile(URL string) (*http.Response, error) {
 	resp, err := http.Get(URL)
 	if err != nil {

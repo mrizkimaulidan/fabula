@@ -29,6 +29,9 @@ func NewParser(instagram *instagram.Instagram) ParserInterface {
 	}
 }
 
+// Call the third party API URL to fetching the story
+// it will returning the response JSON and decode
+// it to Response struct
 func (p *Parser) Call() (*Response, error) {
 	resp, err := http.Get(fmt.Sprintf(API_URL, p.Instagram.ProfileID))
 	if err != nil {
@@ -45,6 +48,9 @@ func (p *Parser) Call() (*Response, error) {
 	return &response, nil
 }
 
+// Parsing the Response struct and checking
+// the story content is video or photo
+// returning the slices of struct File
 func (p *Parser) Parsing(response *Response) *[]file.File {
 	var files []file.File
 	for _, r := range response.Result {

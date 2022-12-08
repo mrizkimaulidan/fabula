@@ -24,6 +24,9 @@ func NewInstagram() InstagramInterface {
 	return &Instagram{}
 }
 
+// Get the instagram profile from Instagram website
+// we inspecting the HTML return response
+// to get the ProfileID
 func (i *Instagram) GetInstagramProfile(username string) (*Instagram, error) {
 	resp, err := http.Get(fmt.Sprintf(INSTAGRAM_URL, username))
 	if err != nil {
@@ -48,6 +51,9 @@ func (i *Instagram) GetInstagramProfile(username string) (*Instagram, error) {
 	return &profile, nil
 }
 
+// Extracting the HTML body response
+// to be honest this is from stackoverflow lol
+// i do not remember the original post
 func (i *Instagram) extractValue(body string, key string) string {
 	keystr := "\"" + key + "\":[^,;\\]}]*"
 	r, _ := regexp.Compile(keystr)
