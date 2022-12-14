@@ -30,7 +30,7 @@ func NewParser(instagram *instagram.Instagram) *Parser {
 func (p *Parser) Call() (*Response, error) {
 	resp, err := http.Get(fmt.Sprintf(API_URL, p.Instagram.ProfileID))
 	if err != nil {
-		return nil, fmt.Errorf("error calling request to API url %s", err.Error())
+		return nil, fmt.Errorf("error calling request to API URL %s", err.Error())
 	}
 	defer resp.Body.Close()
 
