@@ -26,7 +26,7 @@ func NewInstagram() *Instagram {
 func (i *Instagram) GetInstagramProfile(username string) (*Instagram, error) {
 	resp, err := http.Get(fmt.Sprintf(INSTAGRAM_URL, username))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error calling request to instagram %s", err.Error())
 	}
 	defer resp.Body.Close()
 
@@ -36,7 +36,7 @@ func (i *Instagram) GetInstagramProfile(username string) (*Instagram, error) {
 
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error reading response body %s", err.Error())
 	}
 
 	profile := Instagram{

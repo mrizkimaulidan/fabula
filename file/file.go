@@ -52,7 +52,7 @@ func (f *File) CreateFile(file File, source io.Reader) (*os.File, error) {
 	fullPath := fmt.Sprintf("%s/%s/%s%s", DIR, f.Instagram.Username, file.Filename, file.Extension)
 	createdFile, err := os.Create(fullPath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error creating file %s", err.Error())
 	}
 
 	_, err = io.Copy(createdFile, source)
@@ -60,14 +60,14 @@ func (f *File) CreateFile(file File, source io.Reader) (*os.File, error) {
 		return nil, err
 	}
 
-	return createdFile, nil
+	return createdFile, fmt.Errorf("error copying from source %s", err.Error())
 }
 
 // Get file from URL provided on parameter
 func (f *File) GetFile(URL string) (*http.Response, error) {
 	resp, err := http.Get(URL)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error getting file %s", err.Error())
 	}
 
 	return resp, nil
