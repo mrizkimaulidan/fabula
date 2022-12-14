@@ -14,16 +14,11 @@ import (
 
 const API_URL = "https://storiesig.info/api/ig/stories/%s"
 
-type ParserInterface interface {
-	Call() (*Response, error)
-	Parsing(response *Response) *[]file.File
-}
-
 type Parser struct {
 	Instagram *instagram.Instagram
 }
 
-func NewParser(instagram *instagram.Instagram) ParserInterface {
+func NewParser(instagram *instagram.Instagram) *Parser {
 	return &Parser{
 		Instagram: instagram,
 	}

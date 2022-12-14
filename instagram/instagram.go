@@ -11,16 +11,12 @@ import (
 
 const INSTAGRAM_URL = "https://www.instagram.com/%s"
 
-type InstagramInterface interface {
-	GetInstagramProfile(username string) (*Instagram, error)
-}
-
 type Instagram struct {
 	ProfileID string
 	Username  string
 }
 
-func NewInstagram() InstagramInterface {
+func NewInstagram() *Instagram {
 	return &Instagram{}
 }
 

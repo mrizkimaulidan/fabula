@@ -12,14 +12,6 @@ import (
 
 const DIR = "stories"
 
-type FileInterface interface {
-	CreateDir() error
-	CreateFile(file File, source io.Reader) (*os.File, error)
-	GetFile(URL string) (*http.Response, error)
-	OutputPath()
-	DownloadText(file *File)
-}
-
 type File struct {
 	Filename  string
 	Extension string
@@ -27,7 +19,7 @@ type File struct {
 	Instagram *instagram.Instagram
 }
 
-func NewFile(instagram *instagram.Instagram) FileInterface {
+func NewFile(instagram *instagram.Instagram) *File {
 	return &File{
 		Instagram: instagram,
 	}
