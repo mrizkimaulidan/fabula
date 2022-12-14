@@ -30,6 +30,8 @@ func main() {
 	flag.StringVar(&username, "username", "", "the instagram username")
 	flag.Parse()
 
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
 	ok, err := isFlagPassed([]string{"username"})
 	if !ok {
 		log.Fatal(err)
