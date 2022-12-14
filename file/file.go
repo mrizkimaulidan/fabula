@@ -57,10 +57,10 @@ func (f *File) CreateFile(file File, source io.Reader) (*os.File, error) {
 
 	_, err = io.Copy(createdFile, source)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error copying from source %s", err.Error())
 	}
 
-	return createdFile, fmt.Errorf("error copying from source %s", err.Error())
+	return createdFile, nil
 }
 
 // Get file from URL provided on parameter
