@@ -2,39 +2,32 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"sync"
 
 	"github.com/mrizkimaulidan/fabula/file"
 	"github.com/mrizkimaulidan/fabula/instagram"
 	"github.com/mrizkimaulidan/fabula/parser"
+	"github.com/mrizkimaulidan/fabula/pkg"
 )
 
-func isFlagPassed(args []string) (bool, error) {
-	found := false
-	i := 0
-	flag.Visit(func(f *flag.Flag) {
-		if f.Name == args[i] {
-			found = true
-		} else {
-			i++
-		}
-	})
+var (
+	username string
+)
 
-	return found, fmt.Errorf("missing %s arguments, use -help flag", args[i])
-}
+var (
+	flags = []string{"username"}
+)
 
 func main() {
-	var username string
 	flag.StringVar(&username, "username", "", "the instagram username")
 	flag.Parse()
 
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	ok, err := isFlagPassed([]string{"username"})
+	ok, err := pkg.IsFlagPassed(flags)
 	if !ok {
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
 
 	instagram := instagram.NewInstagram()
