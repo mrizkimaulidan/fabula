@@ -34,6 +34,10 @@ Run instagram story downloader
 
 ```bash
 $ ./fabula -username=john.doe
+2022/12/20 18:12:55 main.go:46: found the user with 2 story, downloading now please wait..
+2022/12/20 18:12:56 file.go:30: downloading.. 1529430727970[.jpg]
+2022/12/20 18:12:56 file.go:30: downloading.. 116560088719[.jpg]
+2022/12/20 18:12:56 file.go:36: stories saved on : stories/john.doe
 ```
 
 Check the `./stories` folder where the story contents has been downloaded.
