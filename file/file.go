@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/mrizkimaulidan/fabula/instagram"
 )
@@ -23,6 +26,11 @@ func NewFile(instagram *instagram.Instagram) *File {
 	return &File{
 		Instagram: instagram,
 	}
+}
+
+// Get random string for filename
+func (f *File) GetRandomString() string {
+	return strconv.Itoa(rand.Intn(int(time.Now().UnixNano() / 1000000)))
 }
 
 // Show download text on console

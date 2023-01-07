@@ -3,10 +3,7 @@ package parser
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand"
 	"net/http"
-	"strconv"
-	"time"
 
 	"github.com/mrizkimaulidan/fabula/file"
 	"github.com/mrizkimaulidan/fabula/instagram"
@@ -16,11 +13,13 @@ const API_URL = "https://storiesig.info/api/ig/stories/%s"
 
 type Parser struct {
 	Instagram *instagram.Instagram
+	File      *file.File
 }
 
-func NewParser(instagram *instagram.Instagram) *Parser {
+func NewParser(instagram *instagram.Instagram, file *file.File) *Parser {
 	return &Parser{
 		Instagram: instagram,
+		File:      file,
 	}
 }
 
@@ -50,7 +49,7 @@ func (p *Parser) Parsing(response *Response) *[]file.File {
 	var files []file.File
 	for _, r := range response.Result {
 		newFile := file.File{
-			Filename: strconv.Itoa(rand.Intn(int(time.Now().UnixNano() / 1000000))),
+			Filename: p.File.GetRandomString(),
 		}
 
 		if r.HasAudio {
