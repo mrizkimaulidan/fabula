@@ -14,3 +14,4 @@ run:
 
 clean:
 	rm -rf bin
+	rm -rf stories
