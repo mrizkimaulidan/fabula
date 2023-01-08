@@ -13,10 +13,7 @@ import (
 
 var (
 	username string
-)
-
-var (
-	flags = []string{"username"}
+	flags    = []string{"username"}
 )
 
 func main() {
