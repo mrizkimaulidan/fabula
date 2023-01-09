@@ -22,8 +22,8 @@ func main() {
 
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	ok, err := pkg.IsFlagPassed(flags)
-	if !ok {
+	passed, err := pkg.IsFlagPassed(flags)
+	if !passed {
 		log.Fatal(err.Error())
 	}
 
