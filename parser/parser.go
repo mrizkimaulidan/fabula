@@ -57,7 +57,6 @@ func (p *Parser) Parsing(response *Response) *[]file.File {
 			newFile.URL = r.VideoVersions[0].URL
 
 			files = append(files, newFile)
-
 		} else {
 			newFile.Extension = ".jpg"
 			newFile.URL = r.ImageVersions2.Candidates[0].URL
