@@ -16,7 +16,7 @@ type Parser struct {
 	File      *file.File
 }
 
-func NewParser(instagram *instagram.Instagram, file *file.File) *Parser {
+func New(instagram *instagram.Instagram, file *file.File) *Parser {
 	return &Parser{
 		Instagram: instagram,
 		File:      file,

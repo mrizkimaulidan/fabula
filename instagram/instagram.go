@@ -16,7 +16,7 @@ type Instagram struct {
 	Username  string
 }
 
-func NewInstagram() *Instagram {
+func New() *Instagram {
 	return &Instagram{}
 }
 

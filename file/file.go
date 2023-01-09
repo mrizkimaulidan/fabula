@@ -21,7 +21,7 @@ type File struct {
 	Instagram *instagram.Instagram
 }
 
-func NewFile(instagram *instagram.Instagram) *File {
+func New(instagram *instagram.Instagram) *File {
 	return &File{
 		Instagram: instagram,
 	}

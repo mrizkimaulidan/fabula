@@ -27,15 +27,15 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	instagram := instagram.NewInstagram()
+	instagram := instagram.New()
 	instagramProfile, err := instagram.GetInstagramProfile(username)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	fs := file.NewFile(instagramProfile)
+	fs := file.New(instagram)
 
-	parser := parser.NewParser(instagramProfile, fs)
+	parser := parser.New(instagram, fs)
 	response, err := parser.Call()
 	if err != nil {
 		log.Fatal(err.Error())
