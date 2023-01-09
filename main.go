@@ -66,10 +66,10 @@ func main() {
 			}
 			defer createdFile.Close()
 
-			fs.DownloadText(&f)
+			log.Printf("downloading.. %s[%s]", f.Filename, f.Extension)
 		}(f)
 	}
 	wg.Wait()
 
-	fs.OutputPath()
+	log.Printf("stories saved on : %s/%s", file.DIR, instagramProfile.Username)
 }

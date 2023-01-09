@@ -3,7 +3,6 @@ package file
 import (
 	"fmt"
 	"io"
-	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -31,17 +30,6 @@ func NewFile(instagram *instagram.Instagram) *File {
 // Get random string for filename
 func (f *File) GetRandomString() string {
 	return strconv.Itoa(rand.Intn(int(time.Now().UnixNano() / 1000000)))
-}
-
-// Show download text on console
-func (f *File) DownloadText(file *File) {
-	log.Printf("downloading.. %s[%s]", file.Filename, file.Extension)
-}
-
-// Print output information where is the
-// story has been downloaded
-func (f *File) OutputPath() {
-	log.Printf("stories saved on : %s/%s", DIR, f.Instagram.Username)
 }
 
 // Create directory for saving the story
