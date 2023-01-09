@@ -24,7 +24,8 @@ func New(username string) *Instagram {
 
 // Get the instagram profile from Instagram website
 // we inspecting the HTML return response
-// to get the ProfileID
+// and fill up the ProfileID based on the
+// instagram username
 func (i *Instagram) GetInstagramProfile() (*Instagram, error) {
 	resp, err := http.Get(fmt.Sprintf(INSTAGRAM_URL, i.Username))
 	if err != nil {
@@ -41,12 +42,9 @@ func (i *Instagram) GetInstagramProfile() (*Instagram, error) {
 		return nil, fmt.Errorf("error reading response body %s", err.Error())
 	}
 
-	profile := Instagram{
-		Username:  i.Username,
-		ProfileID: i.extractValue(string(responseBody), "profile_id"),
-	}
+	i.ProfileID = i.extractValue(string(responseBody), "profile_id")
 
-	return &profile, nil
+	return i, nil
 }
 
 // Extracting the HTML body response
