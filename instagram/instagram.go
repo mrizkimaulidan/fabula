@@ -16,15 +16,17 @@ type Instagram struct {
 	Username  string
 }
 
-func New() *Instagram {
-	return &Instagram{}
+func New(username string) *Instagram {
+	return &Instagram{
+		Username: username,
+	}
 }
 
 // Get the instagram profile from Instagram website
 // we inspecting the HTML return response
 // to get the ProfileID
-func (i *Instagram) GetInstagramProfile(username string) (*Instagram, error) {
-	resp, err := http.Get(fmt.Sprintf(INSTAGRAM_URL, username))
+func (i *Instagram) GetInstagramProfile() (*Instagram, error) {
+	resp, err := http.Get(fmt.Sprintf(INSTAGRAM_URL, i.Username))
 	if err != nil {
 		return nil, fmt.Errorf("error calling request to instagram %s", err.Error())
 	}
@@ -40,7 +42,7 @@ func (i *Instagram) GetInstagramProfile(username string) (*Instagram, error) {
 	}
 
 	profile := Instagram{
-		Username:  username,
+		Username:  i.Username,
 		ProfileID: i.extractValue(string(responseBody), "profile_id"),
 	}
 

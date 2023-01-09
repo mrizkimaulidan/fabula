@@ -27,8 +27,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	instagram := instagram.New()
-	instagramProfile, err := instagram.GetInstagramProfile(username)
+	instagram, err := instagram.New(username).GetInstagramProfile()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -71,5 +70,5 @@ func main() {
 	}
 	wg.Wait()
 
-	log.Printf("stories saved on : %s/%s", file.DIR, instagramProfile.Username)
+	log.Printf("stories saved on : %s/%s", file.DIR, instagram.Username)
 }
