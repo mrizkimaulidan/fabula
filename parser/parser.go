@@ -46,8 +46,8 @@ func (p *Parser) Call() (*Response, error) {
 // the story content is video or photo
 // returning the slices of struct File
 func (p *Parser) Parsing(response *Response) *[]file.File {
-	var files []file.File
-	for _, r := range response.Result {
+	var files = make([]file.File, len(response.Result))
+	for i, r := range response.Result {
 		newFile := file.File{
 			Filename: p.File.GetRandomString(),
 		}
@@ -56,12 +56,12 @@ func (p *Parser) Parsing(response *Response) *[]file.File {
 			newFile.Extension = ".mp4"
 			newFile.URL = r.VideoVersions[0].URL
 
-			files = append(files, newFile)
+			files[i] = newFile
 		} else {
 			newFile.Extension = ".jpg"
 			newFile.URL = r.ImageVersions2.Candidates[0].URL
 
-			files = append(files, newFile)
+			files[i] = newFile
 		}
 	}
 
