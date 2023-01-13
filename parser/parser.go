@@ -42,8 +42,8 @@ func (p *Parser) Call() (*Response, error) {
 	return &response, nil
 }
 
-// Parsing the Response struct and checking
-// the story content is video or photo
+// Parsing the Response struct and separating
+// the media types is videos or photos
 // returning the slices of struct File
 func (p *Parser) Parsing(response *Response) *[]file.File {
 	var files = make([]file.File, len(response.Result))
