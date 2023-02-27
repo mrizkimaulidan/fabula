@@ -14,6 +14,8 @@ $ git clone https://github.com/mrizkimaulidan/fabula.git
 
 *Note: There is a `Makefile` if you need to create the binary file by each operating system.*
 
+*Note: Sometimes kinda buggy, just re-run until work.*
+
 Build:
 ```bash
 $ go build
