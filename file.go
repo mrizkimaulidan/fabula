@@ -33,8 +33,8 @@ func GetFile(URL string) (*http.Response, error) {
 	return resp, nil
 }
 
-// Creating file based on source reader and saved it to
-// folder.
+// Creating file based on source reader
+// and saved it into folder.
 func CreateFile(file File, userInformation UserInformation, source io.Reader) (*os.File, error) {
 	// stories/{instagram-username}/{unixTime}.{extension}
 	fullPath := fmt.Sprintf("%s/%s/%s%s", DIR, userInformation.Result.User.Username, file.Name, file.Extension)
