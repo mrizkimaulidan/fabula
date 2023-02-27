@@ -10,7 +10,7 @@ build:
 	GOOS=linux GOARCH=amd64 go build -o bin/fabula64-linux main.go
 
 run:
-	go run main.go -username=$(USERNAME)
+	go build && ./fabula -username=$(USERNAME)
 
 clean:
 	rm -rf bin

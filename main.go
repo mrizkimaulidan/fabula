@@ -4,16 +4,10 @@ import (
 	"flag"
 	"log"
 	"sync"
-
-	"github.com/mrizkimaulidan/fabula/file"
-	"github.com/mrizkimaulidan/fabula/instagram"
-	"github.com/mrizkimaulidan/fabula/parser"
-	"github.com/mrizkimaulidan/fabula/pkg"
 )
 
 var (
 	username string
-	flags    = []string{"username"}
 )
 
 func main() {
@@ -22,53 +16,54 @@ func main() {
 
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	passed, err := pkg.IsFlagPassed(flags)
-	if !passed {
-		log.Fatal(err.Error())
-	}
-
-	instagram, err := instagram.New(username).GetInstagramProfile()
+	userInformation, err := GetUserInformation(username)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	fs := file.New(instagram)
-
-	parser := parser.New(instagram, fs)
-	response, err := parser.Call()
+	userStories, err := GetUserStories(userInformation)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	files := parser.Parsing(response)
-	log.Printf("found the user with %d story, downloading now please wait..", len(*files))
-
-	err = fs.CreateDir()
+	err = CreateDir(userInformation.Result.User.Username)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	storyFiles := ParsingStory(userStories)
+
+	log.Println("=======================================")
+	log.Printf("= Name\t\t: %s(@%s)", userInformation.Result.User.FullName, userInformation.Result.User.Username)
+	log.Printf("= Followers\t: %d", userInformation.Result.User.FollowerCount)
+	log.Printf("= Followings\t: %d", userInformation.Result.User.FollowingCount)
+	log.Printf("= Public Email\t: %s", userInformation.Result.User.PublicEmail)
+	log.Println("=======================================")
+	log.Printf("Found the user with %d stories", len(*storyFiles))
 
 	var wg sync.WaitGroup
-	for _, f := range *files {
+	for _, f := range *storyFiles {
 		wg.Add(1)
-		go func(f file.File) {
+		go func(f File) {
 			defer wg.Done()
-			response, err := fs.GetFile(f.URL)
+			log.Printf("Downloading.. %s%s", f.Name, f.Extension)
+
+			fileStream, err := GetFile(f.URL)
 			if err != nil {
 				log.Fatal(err.Error())
 			}
-			defer response.Body.Close()
+			defer fileStream.Body.Close()
 
-			createdFile, err := fs.CreateFile(f, response.Body)
+			createdFileStream, err := CreateFile(f, *userInformation, fileStream.Body)
 			if err != nil {
 				log.Fatal(err.Error())
 			}
-			defer createdFile.Close()
+			defer createdFileStream.Close()
 
-			log.Printf("downloading.. %s[%s]", f.Filename, f.Extension)
+			log.Printf("Downloaded.. %s%s", f.Name, f.Extension)
 		}(f)
 	}
 	wg.Wait()
 
-	log.Printf("stories saved on : %s/%s", file.DIR, instagram.Username)
+	log.Println("All stories has been downloaded!")
 }

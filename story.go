@@ -1,6 +1,6 @@
-package parser
+package main
 
-type Response struct {
+type Story struct {
 	Result []struct {
 		ImageVersions2 struct {
 			Candidates []struct {
