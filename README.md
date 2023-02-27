@@ -34,10 +34,26 @@ Run instagram story downloader
 
 ```bash
 $ ./fabula -username=john.doe
-2022/12/20 18:12:55 main.go:46: found the user with 2 story, downloading now please wait..
-2022/12/20 18:12:56 file.go:30: downloading.. 1529430727970[.jpg]
-2022/12/20 18:12:56 file.go:30: downloading.. 116560088719[.jpg]
-2022/12/20 18:12:56 file.go:36: stories saved on : stories/john.doe
+2023/02/28 01:29:29 main.go:36: =======================================
+2023/02/28 01:29:29 main.go:37: = Name          : John Doe(@john.doe)
+2023/02/28 01:29:29 main.go:38: = Followers     : 1000
+2023/02/28 01:29:29 main.go:39: = Followings    : 500
+2023/02/28 01:29:29 main.go:40: = Public Email  : john.doe@mail.com
+2023/02/28 01:29:29 main.go:41: =======================================
+2023/02/28 01:29:29 main.go:42: Found the user with 6 stories
+2023/02/28 01:29:29 main.go:49: Downloading.. 1677518969229567834.mp4
+2023/02/28 01:29:29 main.go:49: Downloading.. 1677518969229567434.mp4
+2023/02/28 01:29:29 main.go:49: Downloading.. 1677518969229566634.jpg
+2023/02/28 01:29:29 main.go:49: Downloading.. 1677518969229567334.jpg
+2023/02/28 01:29:29 main.go:49: Downloading.. 1677518969229567634.jpg
+2023/02/28 01:29:29 main.go:49: Downloading.. 1677518969229567734.jpg
+2023/02/28 01:29:31 main.go:63: Downloaded.. 1677518969229567634.jpg
+2023/02/28 01:29:32 main.go:63: Downloaded.. 1677518969229567334.jpg
+2023/02/28 01:29:36 main.go:63: Downloaded.. 1677518969229567734.jpg
+2023/02/28 01:29:36 main.go:63: Downloaded.. 1677518969229566634.jpg
+2023/02/28 01:29:39 main.go:63: Downloaded.. 1677518969229567834.mp4
+2023/02/28 01:29:42 main.go:63: Downloaded.. 1677518969229567434.mp4
+2023/02/28 01:29:42 main.go:68: All stories has been downloaded!
 ```
 
 Check the `./stories` folder where the story contents has been downloaded.
