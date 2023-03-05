@@ -50,9 +50,7 @@ func GetUserStories(userInformation *UserInformation) (*Story, error) {
 // Parsing the stories by separating
 // the photo or videos by content types.
 func ParsingStory(story *Story) *[]File {
-	var (
-		files = make([]File, len(story.Result))
-	)
+	files := make([]File, len(story.Result))
 
 	for i, r := range story.Result {
 		newFile := File{
