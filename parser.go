@@ -59,7 +59,7 @@ func ParsingStory(story *Story) *[]File {
 			Name: strconv.Itoa(int(time.Now().UnixNano())),
 		}
 
-		if r.HasAudio {
+		if len(r.VideoVersions) > 0 {
 			newFile.Extension = ".mp4"
 			newFile.URL = r.VideoVersions[0].URL
 
