@@ -15,4 +15,4 @@ run:
 clean:
 	rm -rf bin
 	rm -rf stories
-	rm fabula
+	rm -f fabula
