@@ -68,6 +68,12 @@ func ParsingStory(story *Story) *[]File {
 
 			files[i] = newFile
 		}
+
+		// when running on windows, the time.Now() function resulting same time precision,
+		// so the file name will be always same on each file, to fix this issue add the delay.
+		// shame on you Windows.
+		// https://stackoverflow.com/questions/57285292/why-does-time-now-unixnano-returns-the-same-result-after-an-io-operation
+		time.Sleep(time.Millisecond)
 	}
 
 	return &files
