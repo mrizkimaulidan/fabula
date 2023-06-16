@@ -1,10 +1,12 @@
 # fabula
 
-Yet another of instagram stories downloader. Downloading instagram stories without account. Not working if the instagram target is private.
+Fabula is yet another Instagram stories downloader that allows you to download Instagram stories without an account. Please note that it will not work if the Instagram target is private.
 
-Thanks to https://storiesig.info/en/ for providing the website and the API.
+Special thanks to https://storiesig.info/en/ for providing the website and API.
 
-*Note: **You need Go installed on your machine!***
+Note: You need Go installed on your machine!
+
+Clone the repository:
 
 Clone:
 
@@ -12,23 +14,23 @@ Clone:
 $ git clone https://github.com/mrizkimaulidan/fabula.git
 ```
 
-Build:
+Build the project:
 ```bash
 $ go build
 ```
 
 Usage:
 
-Show help
+Show help:
 
 ```bash
 $ ./fabula --help
 Usage of ./fabula:
   -username string
-        the instagram username
+        the Instagram username
 ```
 
-Run instagram story downloader
+Run the Instagram story downloader:
 
 ```bash
 $ ./fabula -username=john.doe
@@ -51,7 +53,7 @@ $ ./fabula -username=john.doe
 2023/02/28 01:29:36 main.go:63: Downloaded.. 1677518969229566634.jpg
 2023/02/28 01:29:39 main.go:63: Downloaded.. 1677518969229567834.mp4
 2023/02/28 01:29:42 main.go:63: Downloaded.. 1677518969229567434.mp4
-2023/02/28 01:29:42 main.go:68: All stories has been downloaded!
+2023/02/28 01:29:42 main.go:68: All stories have been downloaded!
 ```
 
-Check the `./stories` folder where the story contents has been downloaded.
+Check the ./stories folder where the story contents have been downloaded.
