@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"net/http"
@@ -44,7 +45,10 @@ func CreateFile(file File, userInformation UserInformation, source io.Reader) (*
 		return nil, fmt.Errorf("error creating file: %s", err.Error())
 	}
 
-	_, err = io.Copy(createdFile, source)
+	bufferWriter := bufio.NewWriter(createdFile)
+	defer bufferWriter.Flush()
+
+	_, err = io.Copy(bufferWriter, source)
 	if err != nil {
 		return nil, fmt.Errorf("error copying from source: %s", err.Error())
 	}
