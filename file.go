@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path"
@@ -20,7 +21,8 @@ type File struct {
 // Create a directory folder based
 // on the given name.
 func CreateDir(name string) error {
-	path := fmt.Sprintf("%s/%s", DIR, name)
+	path := path.Join(DIR, name)
+	log.Println(path)
 
 	return os.MkdirAll(path, os.ModePerm)
 }
