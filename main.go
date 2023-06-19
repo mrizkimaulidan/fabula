@@ -14,6 +14,11 @@ func main() {
 	flag.StringVar(&username, "username", "", "the Instagram username")
 	flag.Parse()
 
+	// handle if username is not provided in the flag
+	if username == "" {
+		log.Fatal("username not provided in the flag. use --help flag for more info")
+	}
+
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	userInformation, err := GetUserInformation(username)
