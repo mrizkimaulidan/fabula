@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"path"
@@ -22,7 +21,6 @@ type File struct {
 // on the given name.
 func CreateDir(name string) error {
 	path := path.Join(DIR, name)
-	log.Println(path)
 
 	return os.MkdirAll(path, os.ModePerm)
 }
