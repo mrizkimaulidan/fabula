@@ -21,6 +21,13 @@ func main() {
 
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
+	log.Println("checking connection to the API please wait..")
+	err := CheckAPIURLConnection()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	log.Println("the connection seems ok!")
+
 	userInformation, err := GetUserInformation(username)
 	if err != nil {
 		log.Fatal(err.Error())
