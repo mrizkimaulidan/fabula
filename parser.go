@@ -16,17 +16,16 @@ const (
 // Check the connection to API URLs by simply
 // verifying the response status of both URLs.
 func CheckAPIURLConnection() error {
-	resp, err := http.Get(fmt.Sprintf(API_URL_GET_USER_INFORMATION, "instagram"))
+	resp, err := http.Head(fmt.Sprintf(API_URL_GET_USER_INFORMATION, "instagram"))
 	if err != nil {
 		return fmt.Errorf("error calling the API request: %s", err.Error())
 	}
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("error calling API endpoint '%s', code given: %d [%s]", resp.Request.URL, resp.StatusCode, resp.Status)
-
 	}
 
-	resp, err = http.Get(fmt.Sprintf(API_URL_GET_USER_INFORMATION, "instagram"))
+	resp, err = http.Head(fmt.Sprintf(API_URL_GET_USER_INFORMATION, "instagram"))
 	if err != nil {
 		return fmt.Errorf("error calling the API request: %s", err.Error())
 	}
