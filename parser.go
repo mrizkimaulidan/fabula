@@ -20,6 +20,7 @@ func CheckAPIURLConnection() error {
 	if err != nil {
 		return fmt.Errorf("error calling the API request: %s", err.Error())
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("error calling API endpoint '%s', code given: %d [%s]", resp.Request.URL, resp.StatusCode, resp.Status)
