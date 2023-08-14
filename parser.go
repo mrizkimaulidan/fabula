@@ -76,24 +76,24 @@ func GetUserStories(userInformation *UserInformation) (*Story, error) {
 // Parse the stories by separating
 // the photos or videos by content types.
 func ParseStory(story *Story) *[]File {
-	files := make([]File, len(story.Result))
+	var files []File
 
-	for i, r := range story.Result {
+	for _, r := range story.Result {
 		newFile := File{
 			Name: strconv.Itoa(int(time.Now().UnixNano())),
 		}
 
+		// the content type is video
 		if len(r.VideoVersions) > 0 {
 			newFile.Extension = ".mp4"
 			newFile.URL = r.VideoVersions[0].URL
-
-			files[i] = newFile
 		} else {
+			// the content type is image
 			newFile.Extension = ".jpg"
 			newFile.URL = r.ImageVersions2.Candidates[0].URL
-
-			files[i] = newFile
 		}
+
+		files = append(files, newFile)
 
 		// When running on Windows, the time.Now() function returns the same time precision.
 		// This causes the file name to be the same for each file. To fix this issue, add a delay.
