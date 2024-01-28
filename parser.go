@@ -80,7 +80,7 @@ func ParseStory(story *Story) *[]File {
 
 	for _, r := range story.Result {
 		newFile := File{
-			Name: strconv.Itoa(int(time.Now().UnixNano())),
+			Name: strconv.Itoa(int(time.Now().Local().UnixNano())),
 		}
 
 		// the content type is video
