@@ -32,9 +32,9 @@ Show help:
 $ ./fabula --help
 Usage of ./fabula:
   -option string
-        the parsing option 'story' or 'highlight'
+        The parsing option 'story' or 'highlight'
   -username string
-        the Instagram username
+        The Instagram username
 ```
 
 Run the Instagram story downloader:
