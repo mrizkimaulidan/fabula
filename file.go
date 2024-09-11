@@ -9,8 +9,6 @@ import (
 	"path"
 )
 
-const DIR = "stories"
-
 type File struct {
 	Name      string
 	URL       string
@@ -20,7 +18,7 @@ type File struct {
 // Create a directory folder based
 // on the given name.
 func CreateDir(name string) error {
-	path := path.Join(DIR, name)
+	path := path.Join(name)
 
 	return os.MkdirAll(path, os.ModePerm)
 }
@@ -37,9 +35,9 @@ func GetFile(URL string) (*http.Response, error) {
 
 // Create a file based on the provided file struct,
 // user information, and source reader, and save it into a folder.
-func CreateFile(file File, userInformation UserInformation, source io.Reader) (*os.File, error) {
+func CreateFile(dir string, file File, userInformation UserInformation, source io.Reader) (*os.File, error) {
 	// stories/{instagram-username}/{unixTime}.{extension}
-	fullPath := path.Join(DIR, userInformation.Result.User.Username, file.Name+file.Extension)
+	fullPath := path.Join(dir, userInformation.Result.User.Username, file.Name+file.Extension)
 	createdFile, err := os.Create(fullPath)
 	if err != nil {
 		return nil, fmt.Errorf("error creating file: %s", err.Error())

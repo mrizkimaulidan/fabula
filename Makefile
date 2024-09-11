@@ -9,10 +9,14 @@ build:
 	#linux 64bit
 	GOOS=linux GOARCH=amd64 go build -o bin/fabula64-linux *.go
 
-run:
-	go build && ./fabula -username=$(USERNAME)
+story:
+	go build && ./fabula -username=$(USERNAME) -option=story
+
+highlight:
+	go build && ./fabula -username=$(USERNAME) -option=highlight
 
 clean:
 	rm -rf bin
 	rm -rf stories
+	rm -rf highlights
 	rm -f fabula

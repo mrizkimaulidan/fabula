@@ -9,8 +9,10 @@ import (
 )
 
 const (
-	API_URL_GET_USER_INFORMATION = "https://storiesig.info/api/ig/userInfoByUsername/%s"
-	API_URL_GET_STORY            = "https://storiesig.info/api/ig/stories/%s"
+	API_URL_GET_USER_INFORMATION          = "https://storiesig.info/api/ig/userInfoByUsername/%s"
+	API_URL_GET_STORY                     = "https://storiesig.info/api/ig/stories/%s"
+	API_URL_GET_HIGHLIGHT_STORY_FROM_USER = "https://api-ig.storiesig.info/api/highlights/%s"
+	API_URL_GET_HIGHLIGHT_STORIES         = "https://api-ig.storiesig.info/api/highlightStories/%s"
 )
 
 // Check the connection to API URLs by simply
@@ -73,12 +75,77 @@ func GetUserStories(userInformation *UserInformation) (*Story, error) {
 	return &story, nil
 }
 
+// Get a list of highlights for a specific user.
+func GetUserStoryHighlights(userInformation *UserInformation) (*HighlightList, error) {
+	resp, err := http.Get(fmt.Sprintf(API_URL_GET_HIGHLIGHT_STORY_FROM_USER, userInformation.Result.User.Pk))
+	if err != nil {
+		return nil, fmt.Errorf("error calling the API request: %s", err.Error())
+	}
+	defer resp.Body.Close()
+
+	var highlightList HighlightList
+	err = json.NewDecoder(resp.Body).Decode(&highlightList)
+	if err != nil {
+		return nil, fmt.Errorf("error decoding the response body: %s", err.Error())
+	}
+
+	return &highlightList, nil
+}
+
+// Get details for a specific highlight story.
+func GetUserHighlightStory(hightlightStoryID string) (*Highlight, error) {
+	resp, err := http.Get(fmt.Sprintf(API_URL_GET_HIGHLIGHT_STORIES, hightlightStoryID))
+	if err != nil {
+		return nil, fmt.Errorf("error calling the API request: %s", err.Error())
+	}
+	defer resp.Body.Close()
+
+	var highlights Highlight
+	err = json.NewDecoder(resp.Body).Decode(&highlights)
+	if err != nil {
+		return nil, fmt.Errorf("error decoding the response body: %s", err.Error())
+	}
+
+	return &highlights, nil
+}
+
 // Parse the stories by separating
 // the photos or videos by content types.
 func ParseStory(story *Story) *[]File {
 	var files []File
 
 	for _, r := range story.Result {
+		newFile := File{
+			Name: strconv.Itoa(int(time.Now().Local().UnixNano())),
+		}
+
+		// the content type is video
+		if len(r.VideoVersions) > 0 {
+			newFile.Extension = ".mp4"
+			newFile.URL = r.VideoVersions[0].URL
+		} else {
+			// the content type is image
+			newFile.Extension = ".jpg"
+			newFile.URL = r.ImageVersions2.Candidates[0].URL
+		}
+
+		files = append(files, newFile)
+
+		// When running on Windows, the time.Now() function returns the same time precision.
+		// This causes the file name to be the same for each file. To fix this issue, add a delay.
+		// Reference: https://stackoverflow.com/questions/57285292/why-does-time-now-unixnano-returns-the-same-result-after-an-io-operation
+		time.Sleep(time.Millisecond)
+	}
+
+	return &files
+}
+
+// Parse the highlight stories by separating
+// the photos or videos by content types.
+func ParseHighlightStory(highlight *Highlight) *[]File {
+	var files []File
+
+	for _, r := range highlight.Result {
 		newFile := File{
 			Name: strconv.Itoa(int(time.Now().Local().UnixNano())),
 		}
