@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	API_URL_GET_USER_INFORMATION          = "https://storiesig.info/api/ig/userInfoByUsername/%s"
-	API_URL_GET_STORY                     = "https://storiesig.info/api/ig/stories/%s"
+	API_URL_GET_USER_INFORMATION          = "https://api-ig.storiesig.info/api/userInfoByUsername/%s"
+	API_URL_GET_STORY                     = "https://api-ig.storiesig.info/api/story?url=https://www.instagram.com/stories/%s"
 	API_URL_GET_HIGHLIGHT_STORY_FROM_USER = "https://api-ig.storiesig.info/api/highlights/%s"
 	API_URL_GET_HIGHLIGHT_STORIES         = "https://api-ig.storiesig.info/api/highlightStories/%s"
 )
@@ -59,14 +59,14 @@ func GetUserInformation(username string) (*UserInformation, error) {
 }
 
 // Call API request to get user stories.
-func GetUserStories(userInformation *UserInformation) (*Story, error) {
-	resp, err := http.Get(fmt.Sprintf(API_URL_GET_STORY, userInformation.Result.User.Pk))
+func GetUserStories(userInformation *UserInformation) (*Content, error) {
+	resp, err := http.Get(fmt.Sprintf(API_URL_GET_STORY, userInformation.Result.User.Username))
 	if err != nil {
 		return nil, fmt.Errorf("error calling the API request: %s", err.Error())
 	}
 	defer resp.Body.Close()
 
-	var story Story
+	var story Content
 	err = json.NewDecoder(resp.Body).Decode(&story)
 	if err != nil {
 		return nil, fmt.Errorf("error decoding the response body: %s", err.Error())
@@ -93,14 +93,14 @@ func GetUserStoryHighlights(userInformation *UserInformation) (*HighlightList, e
 }
 
 // Get details for a specific highlight story.
-func GetUserHighlightStory(hightlightStoryID string) (*Highlight, error) {
+func GetUserHighlightStory(hightlightStoryID string) (*Content, error) {
 	resp, err := http.Get(fmt.Sprintf(API_URL_GET_HIGHLIGHT_STORIES, hightlightStoryID))
 	if err != nil {
 		return nil, fmt.Errorf("error calling the API request: %s", err.Error())
 	}
 	defer resp.Body.Close()
 
-	var highlights Highlight
+	var highlights Content
 	err = json.NewDecoder(resp.Body).Decode(&highlights)
 	if err != nil {
 		return nil, fmt.Errorf("error decoding the response body: %s", err.Error())
@@ -111,41 +111,10 @@ func GetUserHighlightStory(hightlightStoryID string) (*Highlight, error) {
 
 // Parse the stories by separating
 // the photos or videos by content types.
-func ParseStory(story *Story) *[]File {
+func ParseContent(c *Content) *[]File {
 	var files []File
 
-	for _, r := range story.Result {
-		newFile := File{
-			Name: strconv.Itoa(int(time.Now().Local().UnixNano())),
-		}
-
-		// the content type is video
-		if len(r.VideoVersions) > 0 {
-			newFile.Extension = ".mp4"
-			newFile.URL = r.VideoVersions[0].URL
-		} else {
-			// the content type is image
-			newFile.Extension = ".jpg"
-			newFile.URL = r.ImageVersions2.Candidates[0].URL
-		}
-
-		files = append(files, newFile)
-
-		// When running on Windows, the time.Now() function returns the same time precision.
-		// This causes the file name to be the same for each file. To fix this issue, add a delay.
-		// Reference: https://stackoverflow.com/questions/57285292/why-does-time-now-unixnano-returns-the-same-result-after-an-io-operation
-		time.Sleep(time.Millisecond)
-	}
-
-	return &files
-}
-
-// Parse the highlight stories by separating
-// the photos or videos by content types.
-func ParseHighlightStory(highlight *Highlight) *[]File {
-	var files []File
-
-	for _, r := range highlight.Result {
+	for _, r := range c.Result {
 		newFile := File{
 			Name: strconv.Itoa(int(time.Now().Local().UnixNano())),
 		}

@@ -1,6 +1,6 @@
 package main
 
-type Story struct {
+type Content struct {
 	Result []struct {
 		ImageVersions2 struct {
 			Candidates []struct {
@@ -8,7 +8,7 @@ type Story struct {
 				Height       int    `json:"height"`
 				URL          string `json:"url"`
 				URLSignature struct {
-					Expires   int    `json:"expires"`
+					Expires   string `json:"expires"`
 					Signature string `json:"signature"`
 				} `json:"url_signature"`
 			} `json:"candidates"`
@@ -23,7 +23,7 @@ type Story struct {
 			Height       int    `json:"height"`
 			URL          string `json:"url"`
 			URLSignature struct {
-				Expires   int    `json:"expires"`
+				Expires   string `json:"expires"`
 				Signature string `json:"signature"`
 			} `json:"url_signature"`
 		} `json:"video_versions,omitempty"`

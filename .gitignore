@@ -1,5 +1,6 @@
 !.gitignore
 /stories
+/highlights
 /bin
 *.exe
 *.exe~

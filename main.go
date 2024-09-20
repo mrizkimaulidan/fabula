@@ -54,7 +54,7 @@ func main() {
 			log.Fatal(err.Error())
 		}
 
-		storyFiles := ParseStory(userStories)
+		storyFiles := ParseContent(userStories)
 
 		fmt.Println("=======================================")
 		fmt.Printf("= Name\t\t: %s (@%s)\n", userInformation.Result.User.FullName, userInformation.Result.User.Username)
@@ -133,7 +133,7 @@ func main() {
 					log.Fatal(err.Error())
 				}
 
-				hightlightFiles := ParseHighlightStory(userHighlightStories)
+				hightlightFiles := ParseContent(userHighlightStories)
 
 				err = CreateDir(fmt.Sprintf("%s/%s", directoryName, userInformation.Result.User.Username))
 				if err != nil {

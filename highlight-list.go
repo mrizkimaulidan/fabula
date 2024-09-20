@@ -8,7 +8,7 @@ type HighlightList struct {
 			CroppedImageVersion struct {
 				URL          string `json:"url"`
 				URLSignature struct {
-					Expires   int    `json:"expires"`
+					Expires   string `json:"expires"`
 					Signature string `json:"signature"`
 				} `json:"url_signature"`
 			} `json:"cropped_image_version"`
