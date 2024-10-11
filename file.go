@@ -35,9 +35,8 @@ func GetFile(URL string) (*http.Response, error) {
 
 // Create a file based on the provided file struct,
 // user information, and source reader, and save it into a folder.
-func CreateFile(dir string, file File, userInformation UserInformation, source io.Reader) (*os.File, error) {
-	// stories/{instagram-username}/{unixTime}.{extension}
-	fullPath := path.Join(dir, userInformation.Result.User.Username, file.Name+file.Extension)
+func CreateFile(dir string, file File, source io.Reader) (*os.File, error) {
+	fullPath := path.Join(dir, file.Name+file.Extension)
 	createdFile, err := os.Create(fullPath)
 	if err != nil {
 		return nil, fmt.Errorf("error creating file: %s", err.Error())

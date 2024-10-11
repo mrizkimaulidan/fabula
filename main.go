@@ -43,13 +43,13 @@ func main() {
 
 	switch option {
 	case "story":
-		directoryName := "stories"
+		directoryName := fmt.Sprintf("%s/%s", "stories", userInformation.Result.User.Username)
 		userStories, err := GetUserStories(userInformation)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
 
-		err = CreateDir(fmt.Sprintf("%s/%s", directoryName, userInformation.Result.User.Username))
+		err = CreateDir(directoryName)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
@@ -77,7 +77,7 @@ func main() {
 				}
 				defer fileStream.Body.Close()
 
-				createdFileStream, err := CreateFile("stories", f, *userInformation, fileStream.Body)
+				createdFileStream, err := CreateFile(directoryName, f, fileStream.Body)
 				if err != nil {
 					log.Fatal(err.Error())
 				}
@@ -91,7 +91,7 @@ func main() {
 		fmt.Println("All stories have been downloaded!")
 
 	case "highlight":
-		directoryName := "highlights"
+		directoryName := fmt.Sprintf("%s/%s", "highlights", userInformation.Result.User.Username)
 		userHightlightList, err := GetUserStoryHighlights(userInformation)
 		if err != nil {
 			log.Fatal(err.Error())
@@ -135,7 +135,8 @@ func main() {
 
 				hightlightFiles := ParseContent(userHighlightStories)
 
-				err = CreateDir(fmt.Sprintf("%s/%s", directoryName, userInformation.Result.User.Username))
+				highlightDirWithSelectedNumber := fmt.Sprintf("%s/%v", directoryName, v.Number)
+				err = CreateDir(highlightDirWithSelectedNumber)
 				if err != nil {
 					log.Fatal(err.Error())
 				}
@@ -153,7 +154,7 @@ func main() {
 						}
 						defer fileStream.Body.Close()
 
-						createdFileStream, err := CreateFile("highlights", f, *userInformation, fileStream.Body)
+						createdFileStream, err := CreateFile(highlightDirWithSelectedNumber, f, fileStream.Body)
 						if err != nil {
 							log.Fatal(err.Error())
 						}
